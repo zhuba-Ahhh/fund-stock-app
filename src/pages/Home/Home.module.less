@@ -1,0 +1,220 @@
+.home-container {
+  padding: 16px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.summary-card {
+  background: white;
+  padding: 20px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .summary-item {
+    flex: 1;
+    
+    &:last-child {
+      text-align: right;
+    }
+  }
+
+  .summary-label {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    
+    &:last-child {
+      justify-content: flex-end;
+    }
+  }
+
+  .summary-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+}
+
+.market-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.market-card {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+  .market-name {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+  }
+
+  .market-price {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .market-change {
+    font-size: 12px;
+  }
+}
+
+.fund-section {
+  background: white;
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.sort-bar {
+  display: flex;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
+  font-size: 13px;
+  color: #666;
+
+  .sort-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    gap: 4px;
+
+    &:first-child {
+      justify-content: flex-start;
+      flex: 1.5;
+    }
+
+    &:last-child {
+      justify-content: flex-end;
+    }
+  }
+
+  .sort-icon-placeholder {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.fund-list {
+  background: #fff;
+}
+
+.fund-item {
+  display: flex;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f9f9f9;
+  align-items: center;
+  font-size: 12px;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .fund-col-main {
+    flex: 1.5;
+    min-width: 0;
+    padding-right: 8px;
+  }
+
+  .fund-col-sector {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fund-col-daily {
+    flex: 1;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .fund-col-holding {
+    flex: 1;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .fund-name {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fund-tags {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .update-tag {
+    background: #fff7e6;
+    color: #fa8c16;
+    border: 1px solid #ffd591;
+    padding: 0 4px;
+    border-radius: 2px;
+    font-size: 10px;
+    line-height: 16px;
+  }
+
+  .fund-money {
+    color: #999;
+  }
+
+  .sector-change {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .sector-name {
+    color: #999;
+  }
+
+  .amount {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .percent {
+    font-size: 10px;
+    transform: scale(0.9);
+    transform-origin: right center;
+  }
+}
