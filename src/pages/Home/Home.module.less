@@ -1,20 +1,18 @@
+@import '../../styles/theme.less';
+
 .home-container {
-  padding: 16px;
-  background-color: #f5f5f5;
+  padding: @spacing-lg;
+  background-color: @color-background;
   min-height: 100vh;
 }
 
 .summary-card {
-  background: white;
-  padding: 20px 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  .card();
+  padding: @spacing-xl @spacing-lg;
+  margin-bottom: @spacing-lg;
 
   .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    .flex-between();
   }
 
   .summary-item {
@@ -26,12 +24,12 @@
   }
 
   .summary-label {
-    font-size: 14px;
-    color: #999;
-    margin-bottom: 8px;
+    font-size: @font-size-md;
+    color: @color-text-tertiary;
+    margin-bottom: @spacing-sm;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: @spacing-xs;
     
     &:last-child {
       justify-content: flex-end;
@@ -39,71 +37,64 @@
   }
 
   .summary-value {
-    font-size: 24px;
+    font-size: @font-size-xxl;
     font-weight: bold;
-    color: #333;
+    color: @color-text-primary;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
 }
 
 .market-section {
-  margin-bottom: 20px;
+  margin-bottom: @spacing-xl;
 }
 
 .section-title {
-  font-size: 18px;
+  font-size: @font-size-xl;
   font-weight: bold;
-  margin-bottom: 12px;
-  color: #333;
+  margin-bottom: @spacing-md;
+  color: @color-text-primary;
 }
 
 .market-card {
-  background: white;
-  padding: 12px;
-  border-radius: 8px;
+  .card();
+  padding: @spacing-md;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 
   .market-name {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 4px;
+    font-size: @font-size-md;
+    color: @color-text-secondary;
+    margin-bottom: @spacing-xs;
   }
 
   .market-price {
-    font-size: 16px;
+    font-size: @font-size-lg;
     font-weight: bold;
     margin-bottom: 2px;
   }
 
   .market-change {
-    font-size: 12px;
+    font-size: @font-size-sm;
   }
 }
 
 .fund-section {
-  background: white;
-  border-radius: 8px;
+  .card();
   padding: 0;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .sort-bar {
   display: flex;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  background: #fff;
+  padding: @spacing-md @spacing-lg;
+  border-bottom: 1px solid @color-border;
+  background: @color-white;
   font-size: 13px;
-  color: #666;
+  color: @color-text-secondary;
 
   .sort-item {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .flex-center();
     cursor: pointer;
-    gap: 4px;
+    gap: @spacing-xs;
 
     &:first-child {
       justify-content: flex-start;
@@ -122,15 +113,15 @@
 }
 
 .fund-list {
-  background: #fff;
+  background: @color-white;
 }
 
 .fund-item {
   display: flex;
-  padding: 12px 16px;
+  padding: @spacing-md @spacing-lg;
   border-bottom: 1px solid #f9f9f9;
   align-items: center;
-  font-size: 12px;
+  font-size: @font-size-sm;
   
   &:last-child {
     border-bottom: none;
@@ -139,7 +130,7 @@
   .fund-col-main {
     flex: 1.5;
     min-width: 0;
-    padding-right: 8px;
+    padding-right: @spacing-sm;
   }
 
   .fund-col-sector {
@@ -167,10 +158,10 @@
   }
 
   .fund-name {
-    font-size: 14px;
-    color: #333;
+    font-size: @font-size-md;
+    color: @color-text-primary;
     font-weight: 500;
-    margin-bottom: 4px;
+    margin-bottom: @spacing-xs;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -179,41 +170,41 @@
   .fund-tags {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: @spacing-xs;
   }
 
   .update-tag {
-    background: #fff7e6;
-    color: #fa8c16;
-    border: 1px solid #ffd591;
-    padding: 0 4px;
-    border-radius: 2px;
-    font-size: 10px;
-    line-height: 16px;
+    background: @color-tag-bg;
+    color: @color-tag-text;
+    border: 1px solid @color-tag-border;
+    padding: 0 @spacing-xs;
+    border-radius: @border-radius-sm;
+    font-size: @font-size-xs;
+    line-height: @font-size-lg;
   }
 
   .fund-money {
-    color: #999;
+    color: @color-text-tertiary;
   }
 
   .sector-change {
-    font-size: 14px;
+    font-size: @font-size-md;
     font-weight: 500;
     margin-bottom: 2px;
   }
 
   .sector-name {
-    color: #999;
+    color: @color-text-tertiary;
   }
 
   .amount {
-    font-size: 14px;
+    font-size: @font-size-md;
     font-weight: 500;
     margin-bottom: 2px;
   }
 
   .percent {
-    font-size: 10px;
+    font-size: @font-size-xs;
     transform: scale(0.9);
     transform-origin: right center;
   }

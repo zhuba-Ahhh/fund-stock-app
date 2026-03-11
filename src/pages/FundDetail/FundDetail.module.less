@@ -1,40 +1,38 @@
+@import '../../styles/theme.less';
+
 .detail-container {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: @color-background;
   display: flex;
   flex-direction: column;
 
   :global {
     .adm-list-item-content-extra {
-      font-size: 14px;
-      color: #333;
+      font-size: @font-size-md;
+      color: @color-text-primary;
     }
   }
 }
 
 .detail-content {
   flex: 1;
-  padding: 16px;
+  padding: @spacing-lg;
   overflow-y: auto;
 }
 
 .loading-container {
-  padding: 20px;
+  padding: @spacing-xl;
   text-align: center;
-  color: #999;
+  color: @color-text-tertiary;
 }
 
 .summary-card {
-  background: white;
-  padding: 20px 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  .card();
+  padding: @spacing-xl @spacing-lg;
+  margin-bottom: @spacing-lg;
 
   .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    .flex-between();
   }
 
   .summary-item {
@@ -46,12 +44,12 @@
   }
 
   .summary-label {
-    font-size: 14px;
-    color: #999;
-    margin-bottom: 8px;
+    font-size: @font-size-md;
+    color: @color-text-tertiary;
+    margin-bottom: @spacing-sm;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: @spacing-xs;
     
     &:last-child {
       justify-content: flex-end;
@@ -59,57 +57,53 @@
   }
 
   .summary-value {
-    font-size: 24px;
+    font-size: @font-size-xxl;
     font-weight: bold;
-    color: #333;
+    color: @color-text-primary;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
 }
 
 .card-header-with-sort {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  .flex-between();
   width: 100%;
 }
 
 .sort-icon {
   display: flex;
   align-items: center;
-  color: #666;
+  color: @color-text-secondary;
 }
 
 .header-card {
-  background: white;
-  padding: 24px 16px;
-  border-radius: 8px;
+  .card();
+  padding: @spacing-xxl @spacing-lg;
   text-align: center;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: @spacing-lg;
 
   .fund-code-tag {
     display: inline-block;
-    background: #f0f0f0;
-    color: #666;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    margin-bottom: 16px;
+    background: @color-border;
+    color: @color-text-secondary;
+    padding: 2px @spacing-sm;
+    border-radius: @border-radius-md;
+    font-size: @font-size-sm;
+    margin-bottom: @spacing-lg;
   }
 
   .earning-display {
-    margin-bottom: 24px;
+    margin-bottom: @spacing-xxl;
     
     .earning-value {
-      font-size: 32px;
+      font-size: @font-size-xxxl;
       font-weight: bold;
       line-height: 1.2;
     }
 
     .earning-label {
-      font-size: 14px;
-      color: #999;
-      margin-top: 4px;
+      font-size: @font-size-md;
+      color: @color-text-tertiary;
+      margin-top: @spacing-xs;
     }
   }
 
@@ -117,27 +111,27 @@
     text-align: center;
     
     .stat-value {
-      font-size: 16px;
+      font-size: @font-size-lg;
       font-weight: 500;
-      margin-bottom: 4px;
+      margin-bottom: @spacing-xs;
     }
 
     .stat-label {
-      font-size: 12px;
-      color: #999;
+      font-size: @font-size-sm;
+      color: @color-text-tertiary;
     }
   }
 }
 
 .section-card {
-  margin-bottom: 16px;
-  border-radius: 8px;
+  margin-bottom: @spacing-lg;
+  border-radius: @border-radius-lg;
   overflow: hidden;
 
   :global {
     .adm-card-header {
       border-bottom: 1px solid #eee;
-      padding: 12px 16px;
+      padding: @spacing-md @spacing-lg;
     }
   }
 }

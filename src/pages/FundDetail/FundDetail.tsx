@@ -4,6 +4,7 @@ import { NavBar, Card, List, Grid, Toast } from 'antd-mobile';
 import { UpOutline, DownOutline, EyeOutline } from 'antd-mobile-icons';
 import type { FundItem } from '../../types';
 import { fetchFundList } from '../../services/api';
+import { TEXTS } from '../../common/texts';
 import styles from './FundDetail.module.less';
 
 const FundDetail: React.FC = () => {
@@ -26,14 +27,14 @@ const FundDetail: React.FC = () => {
           setFund(found);
         } else {
           Toast.show({
-            content: 'Fund not found',
+            content: TEXTS.FUND_DETAIL.NOT_FOUND,
             icon: 'fail'
           });
         }
       }
     } catch {
       Toast.show({
-        content: 'Failed to load fund details',
+        content: TEXTS.FUND_DETAIL.FAILED_LOAD_DETAIL,
         icon: 'fail'
       });
     } finally {
@@ -71,9 +72,9 @@ const FundDetail: React.FC = () => {
   if (!fund) {
     return (
       <div className={styles['detail-container']}>
-        <NavBar onBack={() => navigate(-1)}>Fund Detail</NavBar>
+        <NavBar onBack={() => navigate(-1)}>{TEXTS.FUND_DETAIL.TITLE}</NavBar>
         <div className={styles['loading-container']}>
-          {loading ? 'Loading...' : 'Fund not found'}
+          {loading ? TEXTS.COMMON.LOADING : TEXTS.FUND_DETAIL.NOT_FOUND}
         </div>
       </div>
     )
@@ -87,7 +88,7 @@ const FundDetail: React.FC = () => {
           <div className={styles['summary-row']}>
             <div className={styles['summary-item']}>
               <div className={styles['summary-label']}>
-                Total Asset (¥) <EyeOutline fontSize={14} />
+                {TEXTS.COMMON.TOTAL_ASSET} <EyeOutline fontSize={14} />
               </div>
               <div className={styles['summary-value']}>
                 {fund.money.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -95,7 +96,7 @@ const FundDetail: React.FC = () => {
             </div>
             <div className={styles['summary-item']} onClick={() => {}}>
               <div className={styles['summary-label']}>
-                Daily Income
+                {TEXTS.COMMON.DAILY_INCOME}
               </div>
               <div className={styles['summary-value']} style={{ color: renderColor(fund.currentEarning) }}>
                 {renderSign(fund.currentEarning)}{fund.currentEarning.toFixed(2)}
@@ -108,46 +109,46 @@ const FundDetail: React.FC = () => {
           <div className={styles['fund-code-tag']}>{fund.code}</div>
           <div className={styles['earning-display']} style={{ color: renderColor(fund.dailyYield) }}>
             <div className={styles['earning-value']}>{renderSign(fund.dailyYield)}{(fund.dailyYield * 100).toFixed(2)}%</div>
-            <div className={styles['earning-label']}>Daily Yield</div>
+            <div className={styles['earning-label']}>{TEXTS.COMMON.DAILY_YIELD}</div>
           </div>
           <Grid columns={3} gap={8}>
             <Grid.Item>
               <div className={styles['stat-item']}>
                 <div className={styles['stat-value']}>{fund.nav}</div>
-                <div className={styles['stat-label']}>NAV ({fund.updateNavTime.split('-').slice(1).join('-')})</div>
+                <div className={styles['stat-label']}>{TEXTS.COMMON.NAV} ({fund.updateNavTime.split('-').slice(1).join('-')})</div>
               </div>
             </Grid.Item>
             <Grid.Item>
               <div className={styles['stat-item']}>
                 <div className={styles['stat-value']} style={{ color: renderColor(fund.currentEarning) }}>{renderSign(fund.currentEarning)}{fund.currentEarning.toFixed(2)}</div>
-                <div className={styles['stat-label']}>Daily Earn</div>
+                <div className={styles['stat-label']}>{TEXTS.COMMON.DAILY_EARN}</div>
               </div>
             </Grid.Item>
             <Grid.Item>
               <div className={styles['stat-item']}>
                 <div className={styles['stat-value']} style={{ color: renderColor(fund.sumEarning) }}>{renderSign(fund.sumEarning)}{fund.sumEarning.toFixed(2)}</div>
-                <div className={styles['stat-label']}>Total Earn</div>
+                <div className={styles['stat-label']}>{TEXTS.COMMON.TOTAL_EARN}</div>
               </div>
             </Grid.Item>
           </Grid>
         </div>
 
-        <Card title="Holdings" className={styles['section-card']}>
+        <Card title={TEXTS.FUND_DETAIL.HOLDINGS} className={styles['section-card']}>
           <List>
-            <List.Item extra={fund.money.toFixed(2)}>Total Asset</List.Item>
-            <List.Item extra={fund.headMoney.toFixed(2)}>Principal</List.Item>
+            <List.Item extra={fund.money.toFixed(2)}>{TEXTS.FUND_DETAIL.HOLDINGS}</List.Item>
+            <List.Item extra={fund.headMoney.toFixed(2)}>{TEXTS.FUND_DETAIL.PRINCIPAL}</List.Item>
             <List.Item extra={<span style={{ color: renderColor(fund.earnings) }}>{renderSign(fund.earnings)}{fund.earnings.toFixed(2)}</span>}>
-              Hold Earning
+              {TEXTS.FUND_DETAIL.HOLD_EARNING}
             </List.Item>
           </List>
         </Card>
 
-        <Card title="Basic Info" className={styles['section-card']}>
+        <Card title={TEXTS.FUND_DETAIL.BASIC_INFO} className={styles['section-card']}>
           <List>
-            <List.Item extra={fund.data.investType}>Type</List.Item>
-            <List.Item extra={fund.data.investStyle}>Style</List.Item>
-            {fund.data.investWorth && <List.Item extra={fund.data.investWorth}>Worth</List.Item>}
-            {fund.data.risk && <List.Item extra={fund.data.risk}>Risk</List.Item>}
+            <List.Item extra={fund.data.investType}>{TEXTS.FUND_DETAIL.TYPE}</List.Item>
+            <List.Item extra={fund.data.investStyle}>{TEXTS.FUND_DETAIL.STYLE}</List.Item>
+            {fund.data.investWorth && <List.Item extra={fund.data.investWorth}>{TEXTS.FUND_DETAIL.WORTH}</List.Item>}
+            {fund.data.risk && <List.Item extra={fund.data.risk}>{TEXTS.FUND_DETAIL.RISK}</List.Item>}
           </List>
         </Card>
 
@@ -155,9 +156,9 @@ const FundDetail: React.FC = () => {
           <Card 
             title={
               <div className={styles['card-header-with-sort']} onClick={toggleSort}>
-                <span>Related Industry</span>
+                <span>{TEXTS.FUND_DETAIL.RELATED_INDUSTRY}</span>
                 <span className={styles['sort-icon']}>
-                  {sortOrder === 'default' && <span style={{ fontSize: 12, color: '#999' }}>Sort</span>}
+                  {sortOrder === 'default' && <span style={{ fontSize: 12, color: '#999' }}>{TEXTS.COMMON.SORT}</span>}
                   {sortOrder === 'asc' && <UpOutline />}
                   {sortOrder === 'desc' && <DownOutline />}
                 </span>

@@ -4,6 +4,7 @@ import { Grid, Toast } from 'antd-mobile';
 import { UpOutline, DownOutline, EyeOutline } from 'antd-mobile-icons';
 import { fetchMarketIndex, fetchFundList } from '../../services/api';
 import type { MarketIndex, FundItem } from '../../types';
+import { TEXTS } from '../../common/texts';
 import styles from './Home.module.less';
 
 type SortField = 'sector' | 'daily' | 'holding';
@@ -32,7 +33,7 @@ const Home: React.FC = () => {
         console.error('Error loading data:', error);
         Toast.show({
           icon: 'fail',
-          content: 'Failed to load data',
+          content: TEXTS.COMMON.FAILED_LOAD_DATA,
         });
       }
     };
@@ -112,7 +113,7 @@ const Home: React.FC = () => {
         <div className={styles['summary-row']}>
           <div className={styles['summary-item']}>
             <div className={styles['summary-label']}>
-              Total Asset (¥) <EyeOutline fontSize={14} />
+              {TEXTS.COMMON.TOTAL_ASSET} <EyeOutline fontSize={14} />
             </div>
             <div className={styles['summary-value']}>
               {totalAssets.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -120,7 +121,7 @@ const Home: React.FC = () => {
           </div>
           <div className={styles['summary-item']}>
             <div className={styles['summary-label']}>
-              Daily Income
+              {TEXTS.COMMON.DAILY_INCOME}
             </div>
             <div className={styles['summary-value']} style={{ color: renderColor(totalDailyIncome) }}>
               {renderSign(totalDailyIncome)}{totalDailyIncome.toFixed(2)}
@@ -130,7 +131,7 @@ const Home: React.FC = () => {
       </div>
 
       <div className={styles['market-section']}>
-        <h2 className={styles['section-title']}>Market Index</h2>
+        <h2 className={styles['section-title']}>{TEXTS.HOME.MARKET_INDEX}</h2>
         <Grid columns={3} gap={8}>
           {marketIndexes.map((index) => (
             <Grid.Item key={index.code}>
@@ -151,16 +152,16 @@ const Home: React.FC = () => {
       <div className={styles['fund-section']}>
         <div className={styles['sort-bar']}>
           <div className={styles['sort-item']}>
-            Common
+            {TEXTS.HOME.SORT_COMMON}
           </div>
           <div className={styles['sort-item']} onClick={() => handleSort('sector')}>
-            Sector {renderSortIcon('sector')}
+            {TEXTS.HOME.SORT_SECTOR} {renderSortIcon('sector')}
           </div>
           <div className={styles['sort-item']} onClick={() => handleSort('daily')}>
-            Daily {renderSortIcon('daily')}
+            {TEXTS.HOME.SORT_DAILY} {renderSortIcon('daily')}
           </div>
           <div className={styles['sort-item']} onClick={() => handleSort('holding')}>
-            Hold {renderSortIcon('holding')}
+            {TEXTS.HOME.SORT_HOLD} {renderSortIcon('holding')}
           </div>
         </div>
 
@@ -181,7 +182,7 @@ const Home: React.FC = () => {
                 <div className={styles['fund-col-main']}>
                   <div className={styles['fund-name']}>{fund.data.name}</div>
                   <div className={styles['fund-tags']}>
-                    {fund.isUpdate && <span className={styles['update-tag']}>Updated</span>}
+                    {fund.isUpdate && <span className={styles['update-tag']}>{TEXTS.COMMON.UPDATED}</span>}
                     <span className={styles['fund-money']}>¥ {fund.money.toLocaleString()}</span>
                   </div>
                 </div>

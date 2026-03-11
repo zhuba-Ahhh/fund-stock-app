@@ -1,0 +1,57 @@
+// Colors
+@color-primary: #e15241;
+@color-success: #33b066;
+@color-background: #f5f5f5;
+@color-text-primary: #333;
+@color-text-secondary: #666;
+@color-text-tertiary: #999;
+@color-white: #fff;
+@color-border: #f0f0f0;
+@color-tag-bg: #fff7e6;
+@color-tag-text: #fa8c16;
+@color-tag-border: #ffd591;
+
+// Spacing
+@spacing-xs: 4px;
+@spacing-sm: 8px;
+@spacing-md: 12px;
+@spacing-lg: 16px;
+@spacing-xl: 20px;
+@spacing-xxl: 24px;
+
+// Font Sizes
+@font-size-xs: 10px;
+@font-size-sm: 12px;
+@font-size-md: 14px;
+@font-size-lg: 16px;
+@font-size-xl: 18px;
+@font-size-xxl: 24px;
+@font-size-xxxl: 32px;
+
+// Border Radius
+@border-radius-sm: 2px;
+@border-radius-md: 4px;
+@border-radius-lg: 8px;
+
+// Shadows
+@shadow-card: 0 2px 4px rgba(0,0,0,0.05);
+
+// Mixins
+.card() {
+  background: @color-white;
+  border-radius: @border-radius-lg;
+  box-shadow: @shadow-card;
+  overflow: hidden;
+}
+
+.flex-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between() {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
