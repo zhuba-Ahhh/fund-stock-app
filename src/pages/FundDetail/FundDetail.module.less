@@ -10,8 +10,23 @@
     .adm-list-item-content-extra {
       font-size: @font-size-md;
       color: @color-text-primary;
+      font-weight: 500;
+      font-family: 'DIN Alternate', sans-serif;
+    }
+    
+    .adm-list-body {
+        border-top: none;
+        border-bottom: none;
+    }
+    
+    .adm-list-item {
+        padding-left: @spacing-lg;
     }
   }
+}
+
+.skeleton-container {
+  padding: 0;
 }
 
 .detail-content {
@@ -30,6 +45,8 @@
   .card();
   padding: @spacing-xl @spacing-lg;
   margin-bottom: @spacing-lg;
+  background: linear-gradient(135deg, @color-white 0%, #fefcfc 100%);
+  border: 1px solid fade(@color-primary, 5%);
 
   .summary-row {
     .flex-between();
@@ -37,30 +54,29 @@
 
   .summary-item {
     flex: 1;
+    .flex-col();
     
     &:last-child {
+      align-items: flex-end;
       text-align: right;
     }
   }
 
   .summary-label {
-    font-size: @font-size-md;
+    font-size: @font-size-sm;
     color: @color-text-tertiary;
-    margin-bottom: @spacing-sm;
+    margin-bottom: @spacing-xs;
     display: flex;
     align-items: center;
     gap: @spacing-xs;
-    
-    &:last-child {
-      justify-content: flex-end;
-    }
   }
 
   .summary-value {
     font-size: @font-size-xxl;
-    font-weight: bold;
+    font-weight: 700;
     color: @color-text-primary;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'DIN Alternate', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+    letter-spacing: -0.5px;
   }
 }
 
@@ -77,47 +93,52 @@
 
 .header-card {
   .card();
-  padding: @spacing-xxl @spacing-lg;
+  padding: @spacing-xl @spacing-lg; // slightly reduced padding
   text-align: center;
   margin-bottom: @spacing-lg;
 
   .fund-code-tag {
     display: inline-block;
-    background: @color-border;
-    color: @color-text-secondary;
-    padding: 2px @spacing-sm;
-    border-radius: @border-radius-md;
-    font-size: @font-size-sm;
-    margin-bottom: @spacing-lg;
+    background: @color-background;
+    color: @color-text-tertiary;
+    padding: 2px @spacing-md;
+    border-radius: @border-radius-lg;
+    font-size: @font-size-xs;
+    margin-bottom: @spacing-xl;
+    font-family: 'DIN Alternate', monospace;
   }
 
   .earning-display {
     margin-bottom: @spacing-xxl;
     
     .earning-value {
-      font-size: @font-size-xxxl;
-      font-weight: bold;
-      line-height: 1.2;
+      font-size: 40px; // Larger font for main number
+      font-weight: 700;
+      line-height: 1;
+      font-family: 'DIN Alternate', sans-serif;
+      margin-bottom: @spacing-xs;
     }
 
     .earning-label {
-      font-size: @font-size-md;
+      font-size: @font-size-sm;
       color: @color-text-tertiary;
-      margin-top: @spacing-xs;
     }
   }
 
   .stat-item {
     text-align: center;
+    .flex-col();
+    align-items: center;
     
     .stat-value {
       font-size: @font-size-lg;
-      font-weight: 500;
-      margin-bottom: @spacing-xs;
+      font-weight: 600;
+      margin-bottom: 2px;
+      font-family: 'DIN Alternate', sans-serif;
     }
 
     .stat-label {
-      font-size: @font-size-sm;
+      font-size: @font-size-xs;
       color: @color-text-tertiary;
     }
   }
@@ -127,11 +148,18 @@
   margin-bottom: @spacing-lg;
   border-radius: @border-radius-lg;
   overflow: hidden;
+  box-shadow: @shadow-card; // Ensure shadow matches theme
 
   :global {
     .adm-card-header {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid @color-border;
       padding: @spacing-md @spacing-lg;
+      font-weight: 600;
+      font-size: @font-size-md;
+    }
+    
+    .adm-list-item-content {
+        padding: @spacing-md 0;
     }
   }
 }

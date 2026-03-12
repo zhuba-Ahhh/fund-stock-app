@@ -6,10 +6,16 @@
   min-height: 100vh;
 }
 
+.skeleton-container {
+  padding: 0;
+}
+
 .summary-card {
   .card();
   padding: @spacing-xl @spacing-lg;
   margin-bottom: @spacing-lg;
+  background: linear-gradient(135deg, @color-white 0%, #fefcfc 100%);
+  border: 1px solid fade(@color-primary, 5%);
 
   .summary-row {
     .flex-between();
@@ -17,30 +23,29 @@
 
   .summary-item {
     flex: 1;
+    .flex-col();
     
     &:last-child {
+      align-items: flex-end;
       text-align: right;
     }
   }
 
   .summary-label {
-    font-size: @font-size-md;
+    font-size: @font-size-sm;
     color: @color-text-tertiary;
-    margin-bottom: @spacing-sm;
+    margin-bottom: @spacing-xs;
     display: flex;
     align-items: center;
     gap: @spacing-xs;
-    
-    &:last-child {
-      justify-content: flex-end;
-    }
   }
 
   .summary-value {
     font-size: @font-size-xxl;
-    font-weight: bold;
+    font-weight: 700;
     color: @color-text-primary;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'DIN Alternate', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+    letter-spacing: -0.5px;
   }
 }
 
@@ -49,52 +54,71 @@
 }
 
 .section-title {
-  font-size: @font-size-xl;
-  font-weight: bold;
+  font-size: @font-size-lg;
+  font-weight: 600;
   margin-bottom: @spacing-md;
   color: @color-text-primary;
+  padding-left: @spacing-xs;
 }
 
 .market-card {
   .card();
-  padding: @spacing-md;
+  padding: @spacing-md @spacing-sm;
   text-align: center;
+  border: 1px solid @color-white;
+  
+  &:active {
+      background-color: #fafafa;
+  }
 
   .market-name {
-    font-size: @font-size-md;
+    font-size: @font-size-sm;
     color: @color-text-secondary;
     margin-bottom: @spacing-xs;
+    font-weight: 500;
   }
 
   .market-price {
     font-size: @font-size-lg;
-    font-weight: bold;
-    margin-bottom: 2px;
+    font-weight: 700;
+    margin-bottom: @spacing-xs;
+    font-family: 'DIN Alternate', sans-serif;
   }
 
   .market-change {
-    font-size: @font-size-sm;
+    font-size: @font-size-xs;
+    font-weight: 500;
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: @border-radius-sm;
   }
 }
 
 .fund-section {
   .card();
   padding: 0;
+  border-radius: @border-radius-xl; // Larger radius for the big list card
 }
 
 .sort-bar {
   display: flex;
   padding: @spacing-md @spacing-lg;
   border-bottom: 1px solid @color-border;
-  background: @color-white;
-  font-size: 13px;
-  color: @color-text-secondary;
+  background: #fafafa; // Slightly different header bg
+  font-size: @font-size-sm;
+  color: @color-text-tertiary;
+  font-weight: 500;
 
   .sort-item {
     flex: 1;
     .flex-center();
     cursor: pointer;
-    gap: @spacing-xs;
+    gap: 2px;
+    transition: color 0.2s;
+
+    &:hover {
+        color: @color-text-secondary;
+    }
 
     &:first-child {
       justify-content: flex-start;
@@ -118,42 +142,42 @@
 
 .fund-item {
   display: flex;
-  padding: @spacing-md @spacing-lg;
-  border-bottom: 1px solid #f9f9f9;
+  padding: @spacing-lg;
+  border-bottom: 1px solid @color-background; // Lighter separator
   align-items: center;
   font-size: @font-size-sm;
+  transition: background-color 0.2s;
   
   &:last-child {
     border-bottom: none;
+  }
+  
+  &:active {
+      background-color: @color-background;
   }
 
   .fund-col-main {
     flex: 1.5;
     min-width: 0;
     padding-right: @spacing-sm;
+    .flex-col();
   }
 
   .fund-col-sector {
     flex: 1;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
+    .flex-col();
     align-items: center;
   }
 
   .fund-col-daily {
     flex: 1;
-    text-align: right;
-    display: flex;
-    flex-direction: column;
+    .flex-col();
     align-items: flex-end;
   }
 
   .fund-col-holding {
     flex: 1;
-    text-align: right;
-    display: flex;
-    flex-direction: column;
+    .flex-col();
     align-items: flex-end;
   }
 
@@ -161,7 +185,7 @@
     font-size: @font-size-md;
     color: @color-text-primary;
     font-weight: 500;
-    margin-bottom: @spacing-xs;
+    margin-bottom: 6px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -170,30 +194,35 @@
   .fund-tags {
     display: flex;
     align-items: center;
-    gap: @spacing-xs;
+    gap: @spacing-sm;
   }
 
   .update-tag {
     background: @color-tag-bg;
     color: @color-tag-text;
     border: 1px solid @color-tag-border;
-    padding: 0 @spacing-xs;
+    padding: 0 4px;
     border-radius: @border-radius-sm;
     font-size: @font-size-xs;
-    line-height: @font-size-lg;
+    line-height: 1.4;
+    font-weight: 500;
   }
 
   .fund-money {
+    font-size: @font-size-xs;
     color: @color-text-tertiary;
+    font-family: 'DIN Alternate', sans-serif;
   }
 
   .sector-change {
     font-size: @font-size-md;
     font-weight: 500;
     margin-bottom: 2px;
+    font-family: 'DIN Alternate', sans-serif;
   }
 
   .sector-name {
+    font-size: @font-size-xs;
     color: @color-text-tertiary;
   }
 
@@ -201,11 +230,14 @@
     font-size: @font-size-md;
     font-weight: 500;
     margin-bottom: 2px;
+    font-family: 'DIN Alternate', sans-serif;
   }
 
   .percent {
     font-size: @font-size-xs;
-    transform: scale(0.9);
-    transform-origin: right center;
+    font-weight: 500;
+    padding: 1px 4px;
+    border-radius: @border-radius-sm;
+    font-family: 'DIN Alternate', sans-serif;
   }
 }

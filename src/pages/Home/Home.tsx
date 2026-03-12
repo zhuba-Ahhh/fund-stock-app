@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Toast } from 'antd-mobile';
+import { Grid, Toast, PullToRefresh, Skeleton } from 'antd-mobile';
 import { UpOutline, DownOutline, EyeOutline } from 'antd-mobile-icons';
 import { fetchMarketIndex, fetchFundList } from '../../services/api';
 import type { MarketIndex, FundItem } from '../../types';
@@ -16,28 +16,35 @@ const Home: React.FC = () => {
   const [fundList, setFundList] = useState<FundItem[]>([]);
   const [sortField, setSortField] = useState<SortField>('daily');
   const [sortOrder, setSortOrder] = useState<SortOrder>('default');
+  const [loading, setLoading] = useState(true);
+
+  const loadData = async (isRefresh = false) => {
+    if (!isRefresh) setLoading(true);
+    try {
+      const [indexData, fundData] = await Promise.all([
+        fetchMarketIndex(),
+        fetchFundList()
+      ]);
+
+      if (indexData.code === 200) {
+        setMarketIndexes(indexData.data.slice(0, 6)); // Display top 6 indexes
+      }
+
+      if (fundData.code === 200) {
+        setFundList(fundData.data.list);
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+      Toast.show({
+        icon: 'fail',
+        content: TEXTS.COMMON.FAILED_LOAD_DATA,
+      });
+    } finally {
+      if (!isRefresh) setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const indexData = await fetchMarketIndex();
-        if (indexData.code === 200) {
-          setMarketIndexes(indexData.data.slice(0, 6)); // Display top 6 indexes
-        }
-
-        const fundData = await fetchFundList();
-        if (fundData.code === 200) {
-          setFundList(fundData.data.list);
-        }
-      } catch (error) {
-        console.error('Error loading data:', error);
-        Toast.show({
-          icon: 'fail',
-          content: TEXTS.COMMON.FAILED_LOAD_DATA,
-        });
-      }
-    };
-
     loadData();
   }, []);
 
@@ -107,119 +114,143 @@ const Home: React.FC = () => {
     return sortOrder === 'asc' ? <UpOutline fontSize={10} /> : <DownOutline fontSize={10} />;
   };
 
+  const renderSkeleton = () => (
+    <div className={styles['skeleton-container']}>
+      <Skeleton.Title animated style={{ height: 120, marginBottom: 20 }} />
+      <Grid columns={3} gap={8}>
+        {[1, 2, 3, 4, 5, 6].map(i => (
+          <Grid.Item key={i}>
+            <Skeleton.Paragraph animated lineCount={3} style={{ height: 80 }} />
+          </Grid.Item>
+        ))}
+      </Grid>
+      <div style={{ marginTop: 20 }}>
+        {[1, 2, 3, 4, 5].map(i => (
+          <Skeleton.Paragraph key={i} animated lineCount={2} style={{ marginTop: 16 }} />
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className={styles['home-container']}>
-      <div className={styles['summary-card']}>
-        <div className={styles['summary-row']}>
-          <div className={styles['summary-item']}>
-            <div className={styles['summary-label']}>
-              {TEXTS.COMMON.TOTAL_ASSET} <EyeOutline fontSize={14} />
-            </div>
-            <div className={styles['summary-value']}>
-              {totalAssets.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
-          </div>
-          <div className={styles['summary-item']}>
-            <div className={styles['summary-label']}>
-              {TEXTS.COMMON.DAILY_INCOME}
-            </div>
-            <div className={styles['summary-value']} style={{ color: renderColor(totalDailyIncome) }}>
-              {renderSign(totalDailyIncome)}{totalDailyIncome.toFixed(2)}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles['market-section']}>
-        <h2 className={styles['section-title']}>{TEXTS.HOME.MARKET_INDEX}</h2>
-        <Grid columns={3} gap={8}>
-          {marketIndexes.map((index) => (
-            <Grid.Item key={index.code}>
-              <div className={styles['market-card']}>
-                <div className={styles['market-name']}>{index.name}</div>
-                <div className={styles['market-price']} style={{ color: renderColor(index.percent) }}>
-                  {index.current}
-                </div>
-                <div className={styles['market-change']} style={{ color: renderColor(index.percent) }}>
-                  {renderSign(index.percent)}{index.percent}%
-                </div>
-              </div>
-            </Grid.Item>
-          ))}
-        </Grid>
-      </div>
-
-      <div className={styles['fund-section']}>
-        <div className={styles['sort-bar']}>
-          <div className={styles['sort-item']}>
-            {TEXTS.HOME.SORT_COMMON}
-          </div>
-          <div className={styles['sort-item']} onClick={() => handleSort('sector')}>
-            {TEXTS.HOME.SORT_SECTOR} {renderSortIcon('sector')}
-          </div>
-          <div className={styles['sort-item']} onClick={() => handleSort('daily')}>
-            {TEXTS.HOME.SORT_DAILY} {renderSortIcon('daily')}
-          </div>
-          <div className={styles['sort-item']} onClick={() => handleSort('holding')}>
-            {TEXTS.HOME.SORT_HOLD} {renderSortIcon('holding')}
-          </div>
-        </div>
-
-        <div className={styles['fund-list']}>
-          {sortedFundList.map((fund) => {
-            const sector = fund.data.relatedIndustryV2[0];
-            const dailyPercent = fund.dailyYield * 100;
-            const holdingPercent = (fund.earnings / fund.headMoney) * 100; // Approx holding percent
-            const bgColor = fund.currentEarning >= 0 ? 'rgba(255, 240, 240, 0.5)' : 'rgba(240, 255, 240, 0.5)';
-
-            return (
-              <div
-                key={fund._id} 
-                className={styles['fund-item']}
-                style={{ backgroundColor: bgColor }}
-                onClick={() => handleFundClick(fund)}
-              >
-                <div className={styles['fund-col-main']}>
-                  <div className={styles['fund-name']}>{fund.data.name}</div>
-                  <div className={styles['fund-tags']}>
-                    {fund.isUpdate && <span className={styles['update-tag']}>{TEXTS.COMMON.UPDATED}</span>}
-                    <span className={styles['fund-money']}>¥ {fund.money.toLocaleString()}</span>
+      <PullToRefresh onRefresh={() => loadData(true)}>
+        {loading ? renderSkeleton() : (
+          <>
+            <div className={styles['summary-card']}>
+              <div className={styles['summary-row']}>
+                <div className={styles['summary-item']}>
+                  <div className={styles['summary-label']}>
+                    {TEXTS.COMMON.TOTAL_ASSET} <EyeOutline fontSize={14} />
+                  </div>
+                  <div className={styles['summary-value']}>
+                    {totalAssets.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
                 </div>
+                <div className={styles['summary-item']}>
+                  <div className={styles['summary-label']}>
+                    {TEXTS.COMMON.DAILY_INCOME}
+                  </div>
+                  <div className={styles['summary-value']} style={{ color: renderColor(totalDailyIncome) }}>
+                    {renderSign(totalDailyIncome)}{totalDailyIncome.toFixed(2)}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                <div className={styles['fund-col-sector']}>
-                  {sector && (
-                    <>
-                      <div className={styles['sector-change']} style={{ color: renderColor(sector.change) }}>
-                        {renderSign(sector.change)}{(sector.change * 100).toFixed(2)}%
+            <div className={styles['market-section']}>
+              <h2 className={styles['section-title']}>{TEXTS.HOME.MARKET_INDEX}</h2>
+              <Grid columns={3} gap={8}>
+                {marketIndexes.map((index) => (
+                  <Grid.Item key={index.code}>
+                    <div className={styles['market-card']}>
+                      <div className={styles['market-name']}>{index.name}</div>
+                      <div className={styles['market-price']} style={{ color: renderColor(index.percent) }}>
+                        {index.current}
                       </div>
-                      <div className={styles['sector-name']}>{sector.themeName}</div>
-                    </>
-                  )}
-                </div>
+                      <div className={styles['market-change']} style={{ color: renderColor(index.percent) }}>
+                        {renderSign(index.percent)}{index.percent}%
+                      </div>
+                    </div>
+                  </Grid.Item>
+                ))}
+              </Grid>
+            </div>
 
-                <div className={styles['fund-col-daily']}>
-                  <div className={styles['amount']} style={{ color: renderColor(fund.currentEarning) }}>
-                    {renderSign(fund.currentEarning)}{fund.currentEarning.toFixed(2)}
-                  </div>
-                  <div className={styles['percent']} style={{ color: renderColor(fund.dailyYield) }}>
-                    {renderSign(fund.dailyYield)}{dailyPercent.toFixed(2)}%
-                  </div>
+            <div className={styles['fund-section']}>
+              <div className={styles['sort-bar']}>
+                <div className={styles['sort-item']}>
+                  {TEXTS.HOME.SORT_COMMON}
                 </div>
-
-                <div className={styles['fund-col-holding']}>
-                  <div className={styles['amount']} style={{ color: renderColor(fund.earnings) }}>
-                    {renderSign(fund.earnings)}{fund.earnings.toFixed(2)}
-                  </div>
-                  <div className={styles['percent']} style={{ color: renderColor(fund.earnings) }}>
-                    {renderSign(fund.earnings)}{holdingPercent.toFixed(2)}%
-                  </div>
+                <div className={styles['sort-item']} onClick={() => handleSort('sector')}>
+                  {TEXTS.HOME.SORT_SECTOR} {renderSortIcon('sector')}
+                </div>
+                <div className={styles['sort-item']} onClick={() => handleSort('daily')}>
+                  {TEXTS.HOME.SORT_DAILY} {renderSortIcon('daily')}
+                </div>
+                <div className={styles['sort-item']} onClick={() => handleSort('holding')}>
+                  {TEXTS.HOME.SORT_HOLD} {renderSortIcon('holding')}
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
+
+              <div className={styles['fund-list']}>
+                {sortedFundList.map((fund) => {
+                  const sector = fund.data.relatedIndustryV2[0];
+                  const dailyPercent = fund.dailyYield * 100;
+                  const holdingPercent = (fund.earnings / fund.headMoney) * 100; // Approx holding percent
+                  const bgColor = fund.currentEarning >= 0 ? 'rgba(255, 240, 240, 0.5)' : 'rgba(240, 255, 240, 0.5)';
+
+                  return (
+                    <div
+                      key={fund._id} 
+                      className={styles['fund-item']}
+                      style={{ backgroundColor: bgColor }}
+                      onClick={() => handleFundClick(fund)}
+                    >
+                      <div className={styles['fund-col-main']}>
+                        <div className={styles['fund-name']}>{fund.data.name}</div>
+                        <div className={styles['fund-tags']}>
+                          {fund.isUpdate && <span className={styles['update-tag']}>{TEXTS.COMMON.UPDATED}</span>}
+                          <span className={styles['fund-money']}>¥ {fund.money.toLocaleString()}</span>
+                        </div>
+                      </div>
+
+                      <div className={styles['fund-col-sector']}>
+                        {sector && (
+                          <>
+                            <div className={styles['sector-change']} style={{ color: renderColor(sector.change) }}>
+                              {renderSign(sector.change)}{(sector.change * 100).toFixed(2)}%
+                            </div>
+                            <div className={styles['sector-name']}>{sector.themeName}</div>
+                          </>
+                        )}
+                      </div>
+
+                      <div className={styles['fund-col-daily']}>
+                        <div className={styles['amount']} style={{ color: renderColor(fund.currentEarning) }}>
+                          {renderSign(fund.currentEarning)}{fund.currentEarning.toFixed(2)}
+                        </div>
+                        <div className={styles['percent']} style={{ color: renderColor(fund.dailyYield) }}>
+                          {renderSign(fund.dailyYield)}{dailyPercent.toFixed(2)}%
+                        </div>
+                      </div>
+
+                      <div className={styles['fund-col-holding']}>
+                        <div className={styles['amount']} style={{ color: renderColor(fund.earnings) }}>
+                          {renderSign(fund.earnings)}{fund.earnings.toFixed(2)}
+                        </div>
+                        <div className={styles['percent']} style={{ color: renderColor(fund.earnings) }}>
+                          {renderSign(fund.earnings)}{holdingPercent.toFixed(2)}%
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
+      </PullToRefresh>
     </div>
   );
 };
