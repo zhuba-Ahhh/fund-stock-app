@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Toast, PullToRefresh } from 'antd-mobile';
-import { fetchMarketIndex, fetchFundList } from '../../services/api';
+import { fetchMarketIndex, fetchFundList, fetchFundEstimates } from '../../services/api';
 import type { MarketIndex, FundItem } from '../../types';
 import { TEXTS } from '../../common/texts';
 import styles from './Home.module.less';
@@ -31,7 +31,9 @@ const Home: React.FC = () => {
       }
 
       if (fundData.code === 200) {
-        setFundList(fundData.data.list);
+        const list = fundData.data.list;
+        setFundList(list);
+        fetchEstimates(list);
       }
     } catch (error) {
       console.error('Error loading data:', error);
@@ -41,6 +43,25 @@ const Home: React.FC = () => {
       });
     } finally {
       if (!isRefresh) setLoading(false);
+    }
+  };
+
+  // 获取实时净值
+  const fetchEstimates = async (fundList: FundItem[]) => {
+    if (!fundList.length) return;
+
+    try {
+      const res = await fetchFundEstimates(fundList.map(f => f.code));
+      console.log('res', res);
+      if (res.code === 200) {
+        console.log('res', res);
+      }
+    } catch (error) {
+      console.error('Error loading fund estimates:', error);
+      Toast.show({
+        icon: 'fail',
+        content: TEXTS.COMMON.FAILED_LOAD_DATA,
+      });
     }
   };
 

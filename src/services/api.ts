@@ -28,9 +28,9 @@ export const fetchFundList = async () => {
 };
 
 // 获取基金估值
-export const fetchFundEstimates = async (fundCodes: string[]) => {
+export const fetchFundEstimates = async (codes: string[]) => {
   try {
-    const response = await http.post<Record<string, FundEstimate>>('/fund/get-fund-estimates', { fundCodes });
+    const response = await http.post<Record<string, FundEstimate>>('/fund/estimate', { codes });
     return response;
   } catch (error) {
     console.error('Error fetching fund estimates:', error);
