@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { Toast } from 'antd-mobile';
+import { API_BASE_URL, API_LOCAL_BASE_URL } from '../common/const';
 
 // 定义通用响应结构，与 types/index.ts 保持兼容
 export interface ApiResponse<T> {
@@ -79,10 +80,9 @@ class Http {
 }
 
 const http = new Http({
-  baseURL: 'https://api.xiaobeiyangji.com/yangji-api/api',
+  baseURL: process.env.NODE_ENV === 'development' ? API_LOCAL_BASE_URL : API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
-    'xweb_xhr': '1',
   },
   timeout: 10000,
 });

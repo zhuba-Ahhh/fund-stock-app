@@ -45,15 +45,23 @@ export interface MarketIndexResponse {
   data: MarketIndex[];
 }
 
-export interface FundListResponse {
-  code: number;
-  msg: string;
-  data: {
-    list: FundItem[];
-    info: {
-      now: string;
-      holdDateMD: string;
-      isTradingDate: boolean;
-    };
+export interface FundList {
+  list: FundItem[];
+  info: {
+    now: string;
+    holdDateMD: string;
+    isTradingDate: boolean;
   };
+};
+
+export interface FundEstimate {
+  fund_code: string;
+  fund_name?: string;
+  estimate_nav?: string;
+  estimate_growth?: string;
+  estimate_time?: string;
+  latest_nav?: string;
+  latest_nav_date?: string;
+  from_cache?: boolean;
+  error?: string;
 }
